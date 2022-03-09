@@ -1,0 +1,171 @@
+package com.hongri.rxjava.util;
+
+import android.util.Log;
+
+import com.hongri.rxjava.R;
+import com.hongri.rxjava.bean.Course;
+import com.hongri.rxjava.bean.Student;
+
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Function;
+
+/**
+ * RxJava操作符
+ */
+public class RxJavaOperatorsUtil {
+
+    private static final String TAG = "RxJavaOperatorsUtil";
+
+    /**
+     * //TODO
+     * from操作符：
+     * 将其它种类的对象和数据类型转换为Observable
+     */
+    public static void fromOperator() {
+        Integer[] items = {0, 1, 2, 3, 4, 5};
+        Observable observable = Observable.fromArray(items);
+    }
+
+    /**
+     * just操作符：
+     * 创建一个发射指定值的Observable
+     * <p>
+     * Just类似于From，但是From会将数组或Iterable的数据取出然后逐个发射，
+     * 而Just只是简单的原样发射，将数组或Iterable当做单个数据。
+     */
+    public static void justOperator() {
+        Observable.just(1, 2, 3).subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                Log.d(TAG, "onSubscribe: " + d);
+            }
+
+            @Override
+            public void onNext(Integer item) {
+                Log.d(TAG, "Next: " + item);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                Log.d(TAG, "Error: " + error.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG, "onComplete");
+            }
+        });
+    }
+
+    /**
+     * map操作符：
+     * map操作符对原始Observable发射的每一项数据应用一个你选择的函数，然后返回一个发射这些结果的Observable。
+     */
+    public static void mapOperator() {
+        Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
+                //传入两条数据[String类型]
+                emitter.onNext("1");
+                emitter.onNext("2");
+                emitter.onComplete();
+            }
+        }).map(new Function<String, Integer>() {
+            @Override
+            public Integer apply(String string) throws Throwable {
+                return Integer.parseInt(string);
+            }
+        }).subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Integer integer) {
+                Log.d(TAG, "onNext: " + (integer + 1));
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG, "onComplete");
+            }
+        });
+    }
+
+    /**
+     * //TODO
+     * flatMap操作符：
+     * flatMap将一个发射数据的Observable变换为多个Observables，然后将它们发射的数据合并后放进一个单独的Observable
+     */
+    public static void flatMapOperator() {
+        List<Student> students = new ArrayList<>();
+
+        //学生1
+        Student student1 = new Student();
+        student1.name = "Jack";
+        List<Course> courseList = new ArrayList<>();
+
+        Course course = new Course();
+        course.id = "3";
+        course.name = "化学";
+        courseList.add(course);
+
+        Course course2 = new Course();
+        course2.id = "4";
+        course2.name = "物理";
+        courseList.add(course2);
+        student1.coursesList = courseList;
+
+        //学生2
+        Student student2 = new Student();
+        student2.name = "Tom";
+        List<Course> courseList2 = new ArrayList<>();
+
+        Course course21 = new Course();
+        course21.id = "33";
+        course21.name = "英语";
+        courseList2.add(course21);
+
+        Course course22 = new Course();
+        course22.id = "44";
+        course22.name = "语文";
+        courseList2.add(course22);
+        student2.coursesList = courseList2;
+
+        students.add(student2);
+
+//        Observable.(new ObservableOnSubscribe<String>() {
+//            @Override
+//            public void subscribe(@NonNull ObservableEmitter<Student> emitter) throws Throwable {
+//                //传入两条数据[String类型]
+//                emitter.onNext("1");
+//                emitter.onNext("2");
+//                emitter.onComplete();
+//            }
+//        }).(new Function<Object, ObservableSource<Student>>() {
+//
+//            @Override
+//            public ObservableSource<Student> apply(Student o) throws Throwable {
+//                return Observable.fromIterable(o);
+//            }
+//        });
+    }
+}

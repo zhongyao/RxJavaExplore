@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.hongri.rxjava.util.RxJavaOperatorsUtil;
 import com.hongri.rxjava.util.RxJavaUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -14,10 +15,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initRxMethod();
+    }
+
+    private void initRxMethod() {
         //基础应用
 //        RxJavaUtil.useObservable();
 
-        RxJavaUtil.useFlowable();
+//        RxJavaUtil.useFlowable();
 
+        //just操作符
+//        RxJavaOperatorsUtil.justOperator();
+
+        //map操作符
+        RxJavaOperatorsUtil.mapOperator();
     }
 }
