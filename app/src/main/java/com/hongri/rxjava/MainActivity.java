@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
 //        RxJavaOperatorsUtil.justOperator();
 
         //map操作符
-        RxJavaOperatorsUtil.mapOperator();
+//        RxJavaOperatorsUtil.mapOperator();
+
+        //flatMap操作符
+        RxJavaOperatorsUtil.flatMapOperator();
     }
 }

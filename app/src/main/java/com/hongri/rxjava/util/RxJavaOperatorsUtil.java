@@ -12,6 +12,7 @@ import org.reactivestreams.Subscription;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
@@ -19,7 +20,10 @@ import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * RxJava操作符
@@ -111,9 +115,9 @@ public class RxJavaOperatorsUtil {
     }
 
     /**
-     * //TODO
      * flatMap操作符：
-     * flatMap将一个发射数据的Observable变换为多个Observables，然后将它们发射的数据合并后放进一个单独的Observable
+     * flatMap操作符使用一个指定的函数对原始Observable发射的每一项数据执行变换操作，这个函数返回一个本身也发射数据的Observable，
+     * 然后FlatMap合并这些Observables发射的数据，最后将合并后的结果当做它自己的数据序列发射。
      */
     public static void flatMapOperator() {
         List<Student> students = new ArrayList<>();
@@ -152,20 +156,52 @@ public class RxJavaOperatorsUtil {
 
         students.add(student2);
 
-//        Observable.(new ObservableOnSubscribe<String>() {
-//            @Override
-//            public void subscribe(@NonNull ObservableEmitter<Student> emitter) throws Throwable {
-//                //传入两条数据[String类型]
-//                emitter.onNext("1");
-//                emitter.onNext("2");
-//                emitter.onComplete();
-//            }
-//        }).(new Function<Object, ObservableSource<Student>>() {
-//
-//            @Override
-//            public ObservableSource<Student> apply(Student o) throws Throwable {
-//                return Observable.fromIterable(o);
-//            }
-//        });
+        /**
+         * 正常写法
+         */
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Student> studentList = students;
+                for (Student student : studentList) {
+                    List<Course> coursesList = student.coursesList;
+                    for (Course course : coursesList) {
+                        Log.d(TAG, "course:" + ((Course) course).name + " " + ((Course) course).id);
+                    }
+                }
+            }
+        }).start();
+
+        /**
+         * map写法
+         */
+        Observable.fromIterable(students).map(new Function<Student, List<Course>>() {
+            @Override
+            public List<Course> apply(Student student) throws Throwable {
+                return student.coursesList;
+            }
+        }).subscribe(new Consumer<List<Course>>() {
+            @Override
+            public void accept(List<Course> courseList) throws Throwable {
+                for (Course course : courseList) {
+                    Log.d(TAG, "course:" + ((Course) course).name + " " + ((Course) course).id);
+                }
+            }
+        });
+
+        /**
+         * flatMap写法
+         */
+        Observable.fromIterable(students).flatMap(new Function<Student, ObservableSource<?>>() {
+            @Override
+            public ObservableSource<?> apply(Student student) throws Throwable {
+                return Observable.fromIterable(student.coursesList);
+            }
+        }).subscribe(new Consumer<Object>() {
+            @Override
+            public void accept(Object course) throws Throwable {
+                Log.d(TAG, "course:" + ((Course) course).name + " " + ((Course) course).id);
+            }
+        });
     }
 }
