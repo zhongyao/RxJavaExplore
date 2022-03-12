@@ -2,17 +2,12 @@ package com.hongri.rxjava.util;
 
 import android.util.Log;
 
-import com.hongri.rxjava.R;
 import com.hongri.rxjava.bean.Course;
 import com.hongri.rxjava.bean.Student;
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
@@ -20,58 +15,14 @@ import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
- * RxJava操作符
+ * RxJava ---  变换操作符
  */
-public class RxJavaOperatorsUtil {
-
-    private static final String TAG = "RxJavaOperatorsUtil";
-
-    /**
-     * //TODO
-     * from操作符：
-     * 将其它种类的对象和数据类型转换为Observable
-     */
-    public static void fromOperator() {
-        Integer[] items = {0, 1, 2, 3, 4, 5};
-        Observable observable = Observable.fromArray(items);
-    }
-
-    /**
-     * just操作符：
-     * 创建一个发射指定值的Observable
-     * <p>
-     * Just类似于From，但是From会将数组或Iterable的数据取出然后逐个发射，
-     * 而Just只是简单的原样发射，将数组或Iterable当做单个数据。
-     */
-    public static void justOperator() {
-        Observable.just(1, 2, 3).subscribe(new Observer<Integer>() {
-            @Override
-            public void onSubscribe(@NonNull Disposable d) {
-                Log.d(TAG, "onSubscribe: " + d);
-            }
-
-            @Override
-            public void onNext(Integer item) {
-                Log.d(TAG, "Next: " + item);
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                Log.d(TAG, "Error: " + error.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-                Log.d(TAG, "onComplete");
-            }
-        });
-    }
+public class RxJavaTransformOperatorUtil {
+    private static final String TAG = "RxJavaTransformOperator";
 
     /**
      * map操作符：

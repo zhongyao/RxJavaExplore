@@ -4,8 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.hongri.rxjava.util.RxJavaOperatorsUtil;
-import com.hongri.rxjava.util.RxJavaUtil;
+import com.hongri.rxjava.util.RxJavaCombineOperatorUtil;
+import com.hongri.rxjava.util.RxJavaCreateOperatorsUtil;
+import com.hongri.rxjava.util.RxJavaFilterOperatorUtil;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -24,13 +25,48 @@ public class MainActivity extends AppCompatActivity {
 
 //        RxJavaUtil.useFlowable();
 
-        //just操作符
-//        RxJavaOperatorsUtil.justOperator();
+        /**
+         * RxJava创建操作符
+         */
+        //from操作符
+//        RxJavaCreateOperatorsUtil.fromOperator();
 
+        //just操作符
+//        RxJavaCreateOperatorsUtil.justOperator();
+//        RxJavaCreateOperatorsUtil.rangeOperator();
+//        RxJavaCreateOperatorsUtil.intervalOperator();
+        RxJavaCreateOperatorsUtil.repeatOperator();
+
+
+
+
+        /**
+         * RxJava合并操作符
+         */
+//        RxJavaCombineOperatorUtil.concatOperator();
+//        RxJavaCombineOperatorUtil.zipOperator();
+//        RxJavaCombineOperatorUtil.mergeOperator();
+
+
+
+
+        /**
+         * RxJava变换操作符
+         */
         //map操作符
-//        RxJavaOperatorsUtil.mapOperator();
+//        RxJavaTransformOperatorUtil.mapOperator();
 
         //flatMap操作符
-        RxJavaOperatorsUtil.flatMapOperator();
+//        RxJavaTransformOperatorUtil.flatMapOperator();
+
+
+
+
+        /**
+         * RxJava过滤操作符
+         */
+//        RxJavaFilterOperatorUtil.firstOperator();
+//        RxJavaFilterOperatorUtil.lastOperator();
+        RxJavaFilterOperatorUtil.takeOperator();
     }
 }
