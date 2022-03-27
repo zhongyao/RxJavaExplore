@@ -5,9 +5,13 @@ import android.util.Log;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.BooleanSupplier;
 import io.reactivex.rxjava3.functions.Consumer;
@@ -18,6 +22,49 @@ import io.reactivex.rxjava3.functions.Consumer;
 public class RxJavaCreateOperatorsUtil {
 
     private static final String TAG = "RxJavaOperators";
+
+
+    /**
+     * create操作符：
+     * RxJava使用create方法来创建一个Observable，并为它定义事件触发规则。
+     * 通过调用subscribe()方法不断将事件添加到任务队列中
+     */
+    public static void createOperator() {
+        Observable<Integer> observable = Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Integer> emitter) throws Throwable {
+                emitter.onNext(1);
+                emitter.onNext(3);
+                emitter.onComplete();
+
+            }
+        });
+
+        Observer<Integer> observer = new Observer<Integer>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                Log.d(TAG, "onSubscribe:" + d.toString());
+            }
+
+            @Override
+            public void onNext(@NonNull Integer integer) {
+                Log.d(TAG, "onNext:" + integer);
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                Log.d(TAG, "onError:" + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG, "onComplete");
+            }
+        };
+
+        observable.subscribe(observer);
+
+    }
 
     /**
      * from操作符：
@@ -68,6 +115,7 @@ public class RxJavaCreateOperatorsUtil {
 
     /**
      * range操作符：
+     * 创建一个发射特定整数序列的Observable
      */
     public static void rangeOperator() {
         //发送从10开始的整数，发送4个(发到13)
@@ -80,6 +128,7 @@ public class RxJavaCreateOperatorsUtil {
 
     /**
      * interval操作符：
+     * 创建一个按固定时间间隔发射整数序列的Observable
      */
     public static void intervalOperator() {
         //每3秒发个自增整数
@@ -92,6 +141,7 @@ public class RxJavaCreateOperatorsUtil {
 
     /**
      * repeat操作符：
+     * 创建一个发射特定数据重复多次的Observable
      */
     public static void repeatOperator() {
         //一直重复
@@ -106,6 +156,36 @@ public class RxJavaCreateOperatorsUtil {
 //                return false;
 //            }
 //        });
+
+    }
+
+    /**
+     * timer操作符：
+     * 创建一个Observable，它在一个给定的延迟后发射一个特殊的值。
+     */
+    public static void timerOperator() {
+        //延时2s执行
+//        Observable.timer(2000, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Long>() {
+//            @Override
+//            public void accept(Long aLong) {
+//                Log.d(TAG, "倒计时已结束");
+//            }
+//        });
+        //间隔2s执行
+        //原timer方法 Observable.timer(0,5,TimeUnit.SECONDS).subscribe()已过时,使用如下interval代替
+        //take控制执行个数
+        Disposable disposable = Observable.interval(2000, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()).take(10).subscribe(new Consumer<Long>() {
+            @Override
+            public void accept(Long aLong) throws Throwable {
+                Log.d(TAG, "accept:" + aLong);
+            }
+        });
+
+        //stop时的调用
+//        if (disposable != null && disposable.isDisposed()) {
+//            disposable.dispose();
+//            disposable = null;
+//        }
 
     }
 }

@@ -35,8 +35,9 @@ public class MainActivity extends AppCompatActivity {
 //        RxJavaCreateOperatorsUtil.justOperator();
 //        RxJavaCreateOperatorsUtil.rangeOperator();
 //        RxJavaCreateOperatorsUtil.intervalOperator();
-        RxJavaCreateOperatorsUtil.repeatOperator();
-
+//        RxJavaCreateOperatorsUtil.repeatOperator();
+//          RxJavaCreateOperatorsUtil.createOperator();
+          RxJavaCreateOperatorsUtil.timerOperator();
 
 
 
