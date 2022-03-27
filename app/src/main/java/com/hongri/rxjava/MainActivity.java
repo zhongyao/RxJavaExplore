@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.hongri.rxjava.util.RxJavaAssistOperatorsUtil;
 import com.hongri.rxjava.util.RxJavaCombineOperatorUtil;
 import com.hongri.rxjava.util.RxJavaCreateOperatorsUtil;
 import com.hongri.rxjava.util.RxJavaFilterOperatorUtil;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         //flatMap操作符
 //        RxJavaTransformOperatorUtil.flatMapOperator();
-        RxJavaTransformOperatorUtil.flatMapOperator2();
+//        RxJavaTransformOperatorUtil.flatMapOperator2();
 
 
 
@@ -71,5 +72,10 @@ public class MainActivity extends AppCompatActivity {
 //        RxJavaFilterOperatorUtil.firstOperator();
 //        RxJavaFilterOperatorUtil.lastOperator();
 //        RxJavaFilterOperatorUtil.takeOperator();
+
+        /**
+         * RxJava辅助操作符
+         */
+        RxJavaAssistOperatorsUtil.observeOnOperator();
     }
 }

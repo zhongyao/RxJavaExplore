@@ -1,5 +1,6 @@
 package com.hongri.rxjava.util;
 
+import android.os.Looper;
 import android.util.Log;
 
 import org.reactivestreams.Subscriber;
@@ -123,5 +124,13 @@ public class RxJavaUtil {
                         }
                 //需要指定背压策略
                 , BackpressureStrategy.BUFFER);
+    }
+
+    /**
+     * 是否是主线程
+     * @return
+     */
+    public static boolean isMainThread() {
+        return Looper.getMainLooper().getThread().getName().equals(Thread.currentThread().getName());
     }
 }
