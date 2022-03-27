@@ -8,15 +8,19 @@ import com.hongri.rxjava.bean.Student;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * RxJava ---  变换操作符
@@ -27,6 +31,9 @@ public class RxJavaTransformOperatorUtil {
     /**
      * map操作符：
      * map操作符对原始Observable发射的每一项数据应用一个你选择的函数，然后返回一个发射这些结果的Observable。
+     *
+     * map只能单一转换，单一只的是只能一对一进行转换，指一个对象可以转化为另一个对象但是不能转换成对象数组
+     * （map返回结果集不能直接使用from/just再次进行事件分发，一旦转换成对象数组的话，再处理集合/数组的结果时需要利用for一一遍历取出)
      */
     public static void mapOperator() {
         Observable.create(new ObservableOnSubscribe<String>() {
@@ -69,6 +76,9 @@ public class RxJavaTransformOperatorUtil {
      * flatMap操作符：
      * flatMap操作符使用一个指定的函数对原始Observable发射的每一项数据执行变换操作，这个函数返回一个本身也发射数据的Observable，
      * 然后FlatMap合并这些Observables发射的数据，最后将合并后的结果当做它自己的数据序列发射。
+     *
+     * flatMap既可以单一转换也可以一对多/多对多转换，flatmap要求返回Observable，
+     * 因此可以再内部进行from/just的再次事件分发，一一取出单一对象（转换对象的能力不同）
      */
     public static void flatMapOperator() {
         List<Student> students = new ArrayList<>();
@@ -154,5 +164,41 @@ public class RxJavaTransformOperatorUtil {
                 Log.d(TAG, "course:" + ((Course) course).name + " " + ((Course) course).id);
             }
         });
+    }
+
+    public static void flatMapOperator2() {
+        //map实现
+        Observable.just("a", "b", "c")
+                //使用map进行转换，参数1：转换前的类型，参数2：转换后的类型
+                .map(new Function<String, String>() {
+                    @Override
+                    public String apply(String str1) throws Throwable {
+                        Log.d(TAG, "apply1:" + str1);
+                        return str1 + "*";
+                    }
+                }).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String str2) throws Throwable {
+                Log.d(TAG, "accept2:" + str2);
+            }
+        });
+        //flatMap实现
+        Observable.just("a", "b", "c")
+                .flatMap(new Function<String, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(String str1) throws Throwable {
+                        Log.d(TAG, "apply1:" + str1);
+                        return Observable.just(str1 + "!!!");
+                    }
+                })
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String str2) throws Throwable {
+                        Log.d(TAG, "accept2:" + str2);
+                    }
+                });
+
     }
 }

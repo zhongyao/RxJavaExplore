@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.hongri.rxjava.util.RxJavaCombineOperatorUtil;
 import com.hongri.rxjava.util.RxJavaCreateOperatorsUtil;
 import com.hongri.rxjava.util.RxJavaFilterOperatorUtil;
+import com.hongri.rxjava.util.RxJavaTransformOperatorUtil;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 //        RxJavaCreateOperatorsUtil.intervalOperator();
 //        RxJavaCreateOperatorsUtil.repeatOperator();
 //          RxJavaCreateOperatorsUtil.createOperator();
-          RxJavaCreateOperatorsUtil.timerOperator();
+//          RxJavaCreateOperatorsUtil.timerOperator();
 
 
 
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         //flatMap操作符
 //        RxJavaTransformOperatorUtil.flatMapOperator();
+        RxJavaTransformOperatorUtil.flatMapOperator2();
 
 
 
@@ -68,6 +70,6 @@ public class MainActivity extends AppCompatActivity {
          */
 //        RxJavaFilterOperatorUtil.firstOperator();
 //        RxJavaFilterOperatorUtil.lastOperator();
-        RxJavaFilterOperatorUtil.takeOperator();
+//        RxJavaFilterOperatorUtil.takeOperator();
     }
 }
