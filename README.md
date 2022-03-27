@@ -1,11 +1,9 @@
 # RxJavaExplore
-RxJava explore
-创建操作符：
-create：
 
-变化操作符：
-过滤操作符：
-结合操作符：
+#### 创建操作符：create from just range repeat timer interval
+#### 变换操作符：map flatMap
+#### 过滤操作符：fist last take takeLast
+#### 合并操作符[RxJavaCombineOperatorUtil](https://github.com/zhongyao/RxJavaExplore/blob/main/app/src/main/java/com/hongri/rxjava/util/RxJavaCombineOperatorUtil.java)：concat zip merge mergeWith
 
 
 

@@ -173,7 +173,7 @@ public class RxJavaCreateOperatorsUtil {
 //        });
         //间隔2s执行
         //原timer方法 Observable.timer(0,5,TimeUnit.SECONDS).subscribe()已过时,使用如下interval代替
-        //take控制执行个数
+        //take控制执行个数【即发送前n个数据】
         Disposable disposable = Observable.interval(2000, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread()).take(10).subscribe(new Consumer<Long>() {
             @Override
             public void accept(Long aLong) throws Throwable {
