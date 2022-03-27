@@ -8,7 +8,8 @@
 #####    fist last take takeLast
 #### 合并操作符-[RxJavaCombineOperatorUtil](https://github.com/zhongyao/RxJavaExplore/blob/main/app/src/main/java/com/hongri/rxjava/util/RxJavaCombineOperatorUtil.java)：
 #####    concat zip merge mergeWith
-
+#### 辅助操作符-[RxJavaAssistOperatorsUtil](https://github.com/zhongyao/RxJavaExplore/blob/main/app/src/main/java/com/hongri/rxjava/util/RxJavaAssistOperatorsUtil.java)
+####     subscribeOn observeOn
 
 
 ### [RxJava操作符](https://mcxiaoke.gitbooks.io/rxdocs/content/operators/Create.html)
