@@ -10,11 +10,13 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableEmitter;
 import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.BooleanSupplier;
 import io.reactivex.rxjava3.functions.Consumer;
+import io.reactivex.rxjava3.functions.Function;
 
 /**
  * RxJava ---  创建操作符
@@ -140,15 +142,30 @@ public class RxJavaCreateOperatorsUtil {
     }
 
     /**
-     * repeat操作符：
+     * repeat/repeatWhen/repeatUntil操作符：
      * 创建一个发射特定数据重复多次的Observable
      */
     public static void repeatOperator() {
         //一直重复
 //        Observable.fromArray(1, 2, 3, 4).repeat();
-        //重复发送5次
-        Observable.fromArray(1, 2, 3, 4).repeat(5).subscribe(result -> Log.d(TAG, "result:" + result));
-        //重复发送直到符合条件时停止重复
+        //1、repeat操作符重复发送5次
+//        Observable.fromArray(1, 2, 3, 4).repeat(5).subscribe(result -> Log.d(TAG, "result:" + result));
+
+
+        //2、repeatWhen操作符：相当于一个有条件的repeat
+        Observable.fromArray(1, 2, 3, 4).repeatWhen(new Function<Observable<Object>, ObservableSource<?>>() {
+            @Override
+            public ObservableSource<?> apply(Observable<Object> observable) throws Throwable {
+                //【1】只会轮询一次
+//              return Observable.timer(3, TimeUnit.SECONDS);
+//              return Observable.delay(3, TimeUnit.SECONDS);
+                //【2】会持续轮询
+                return observable.delay(3, TimeUnit.SECONDS);
+            }
+        }).subscribe(result -> Log.d(TAG, "repeatWhen --->result:" + result));
+
+
+        //3、repeatUntil操作符：重复发送直到符合条件时停止重复
 //        Observable.fromArray(1, 2, 3, 4).repeatUntil(new BooleanSupplier() {
 //            @Override
 //            public boolean getAsBoolean() throws Exception {
